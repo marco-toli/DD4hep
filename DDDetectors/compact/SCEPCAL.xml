@@ -1,0 +1,83 @@
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!--    XML description of the complete SCEPCAL IDEA detector               -->
+<!--    of the SCEPCAL IDEA collider detector design.                       -->
+<!--                                                                        -->
+<!--    Contained are the required                                          -->
+<!--      ++ global constants used uniquely by this module                  -->
+<!--      ++ visualization attributes                                       -->
+<!--      ++ the definition of the readout structure and the                -->
+<!--         readout segmentation (if necessary)                            -->
+<!--      ++ the include statements for the sensitive detectors and         -->
+<!--         the corresponding support structure(s)                         -->
+<!--                                                                        -->
+<!--                                                                        -->
+<!--   @author  M.Frank                                                     -->
+<!--   @date    14/11/2014                                                  -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+
+<lccdd>
+
+  <info name="SCEPCAL with IDEA"
+        title="SCEPCAL with IDEA"
+        author="Sarah Eno"
+        url="https://twiki.cern.ch/twiki/bin/view/CLIC/xxx"
+        status="development"
+        version="$Id: compact.xml 1374 2014-11-05 10:49:55Z markus.frank@cern.ch $">
+    <comment>The compact format for the SCEPCAL IDEA</comment>        
+  </info>
+
+  <includes>
+    <gdmlFile  ref="elements.xml"/>
+    <gdmlFile  ref="materials.xml"/>
+  </includes>
+  
+  <define>
+    <include ref="SCEPCALConstants.xml"/>
+  </define>
+
+
+  <limits>
+    <limitset name="cal_limits">
+      <limit name="step_length_max" particles="*" value="5.0" unit="mm" />
+    </limitset>
+    <limitset name="SiTrackerBarrelRegionLimitSet">
+      <limit name="step_length_max" particles="*" value="5.0" unit="mm" />
+      <limit name="ekin_min" particles="*" value="0.01" unit="MeV" />
+      <limit name="range_min" particles="*" value="5.0" unit="mm" />
+    </limitset>
+  </limits>
+  <regions>
+    <region name="SiTrackerBarrelRegion" eunit="MeV" lunit="mm" cut="0.001" threshold="0.001">
+      <limitsetref name="SiTrackerBarrelRegionLimitSet"/>
+    </region>
+  </regions>
+
+
+  <comment>Common Generic visualization attributes</comment>
+  <display>
+    <vis name="InvisibleNoDaughters"      showDaughters="false" visible="false"/>
+    <vis name="InvisibleWithDaughters"    showDaughters="true" visible="false"/>
+    <vis name="GreenVis"   alpha="1" r="0.0" g="1.0" b="0.0" showDaughters="true" visible="true"/>
+    <vis name="RedVis"     alpha="1" r="1.0" g="0.0" b="0.0" showDaughters="true" visible="true"/>
+    <vis name="BlueVis"    alpha="1" r="0.0" g="0.0" b="1.0" showDaughters="true" visible="true"/>
+  </display>
+
+  <comment>Additional design specific material definitions</comment>
+  <include ref="SCEPCAL/SCEPCAL_Materials.xml"/>
+
+
+  <comment>Calorimeters</comment>
+  <include ref="SCEPCAL/SCEPCAL_Ecal.xml"/>
+
+
+  <comment>Beampipe</comment>
+  <include ref="SCEPCAL/SCEPCAL_Beampipe.xml"/>
+  
+
+
+  <comment>Magnetic field</comment>
+  <include ref="SCEPCAL/SCEPCAL_Field.xml"/>
+
+</lccdd>
