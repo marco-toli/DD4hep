@@ -69,7 +69,7 @@
 
 
   <comment>Calorimeters</comment>
-  <include ref="SCEPCAL/SCEPCAL_Ecal.xml"/>
+  <include ref="SCEPCAL/SCEPCAL_EcalBarrelOnly.xml"/>
 
 
   <comment>Beampipe</comment>
