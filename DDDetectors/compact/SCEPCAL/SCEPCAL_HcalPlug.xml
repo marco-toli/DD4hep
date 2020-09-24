@@ -10,7 +10,7 @@
 
     <comment>Hadron Calorimeter Plug</comment>
 
-    <dimensions numsides="(int) CaloSides" zmin="SolenoidCoilOuterZ" rmin="MuonEndcap_rmin" rmax="HcalEndcap_rmax" />
+    <dimensions numsides="(int) CaloSidesHcal" zmin="SolenoidCoilOuterZ" rmin="MuonEndcap_rmin" rmax="HcalEndcap_rmax" />
     <layer repeat="1" vis="MuonEndcapLayerVis">
       <slice material="Iron" thickness="15.0*cm"  vis="MuonEndcapAbsorberVis"/>
       <slice material="Aluminum" thickness="0.1*cm" />

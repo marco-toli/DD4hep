@@ -42,17 +42,7 @@
     <limitset name="cal_limits">
       <limit name="step_length_max" particles="*" value="5.0" unit="mm" />
     </limitset>
-    <limitset name="SiTrackerBarrelRegionLimitSet">
-      <limit name="step_length_max" particles="*" value="5.0" unit="mm" />
-      <limit name="ekin_min" particles="*" value="0.01" unit="MeV" />
-      <limit name="range_min" particles="*" value="5.0" unit="mm" />
-    </limitset>
   </limits>
-  <regions>
-    <region name="SiTrackerBarrelRegion" eunit="MeV" lunit="mm" cut="0.001" threshold="0.001">
-      <limitsetref name="SiTrackerBarrelRegionLimitSet"/>
-    </region>
-  </regions>
 
 
   <comment>Common Generic visualization attributes</comment>
@@ -72,8 +62,11 @@
   <include ref="SCEPCAL/SCEPCAL_EcalBarrelOnly.xml"/>
 
 
-  <comment>Beampipe</comment>
-  <include ref="SCEPCAL/SCEPCAL_Beampipe.xml"/>
+
+
+  <comment>Dead material, supports and magnet</comment>
+
+  <include ref="SCEPCAL/SCEPCAL_Solenoid.xml"/>
   
 
 

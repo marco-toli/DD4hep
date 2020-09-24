@@ -10,7 +10,7 @@
 
     <comment>Electromagnetic Calorimeter Endcaps</comment>
 
-    <dimensions numsides="(int) CaloSides" zmin="EcalEndcap_zmin" rmin="EcalEndcap_rmin" rmax="EcalEndcap_rmax" />
+    <dimensions numsides="(int) CaloSidesEcal" zmin="EcalEndcap_zmin" rmin="EcalEndcap_rmin" rmax="EcalEndcap_rmax" />
     <layer repeat="1" vis="EcalLayerVis">
       <slice material = "Silicon" thickness = "0.032*cm" sensitive="yes" limits="cal_limits" vis="EcalSensitiveVis"/>
       <slice material = "Copper"  thickness = "0.005*cm" vis="EcalAbsorberVis"/>

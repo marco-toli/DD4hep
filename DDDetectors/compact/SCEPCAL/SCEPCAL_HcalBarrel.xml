@@ -10,7 +10,7 @@
 
     <comment>Hadron Calorimeter Barrel</comment>
 
-    <dimensions numsides="(int) CaloSidesEcal" rmin="HcalBarrel_rmin" z="EcalBarrel_zmax*2"/>
+    <dimensions numsides="(int) CaloSidesHcal" rmin="HcalBarrel_rmin" z="EcalBarrel_zmax*2"/>
     <staves vis="HcalStavesVis"/>
     <layer repeat="(int)HcalBarrel_layers">
       <slice material="TungstenDens24" thickness="1.00*cm" vis="HcalAbsorberVis"/>
