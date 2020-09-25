@@ -6,7 +6,7 @@
 
     <constant name="CrossingAngle" value="0.020*rad"/>
     
-    <constant name="CaloSidesEcal" value="113"/>
+    <constant name="CaloSides" value="16"/>
 
     
     <constant name="EcalBarrel_ID" value="6"/>
