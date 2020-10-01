@@ -23,20 +23,24 @@ using namespace dd4hep::detail;
 
 static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector sens)  {
   static double tolerance = 0e0;
+
+
+  std::cout<<"Will Robinson: creating Barrel ECAL"<<std::endl;
+
   Layering      layering (e);
   xml_det_t     x_det     = e;
   Material      air       = description.air();
-  int           det_id    = x_det.id();
-  string        det_name  = x_det.nameStr();
+  int           det_id    = x_det.id(); std::cout<<"det_id="<<det_id<<std::endl;
+  string        det_name  = x_det.nameStr();std::cout<<"det_name="<<det_name<<std::endl;
   xml_comp_t    x_staves  = x_det.staves();
   xml_comp_t    x_dim     = x_det.dimensions();
-  int           nsides    = x_dim.numsides();
-  double        inner_r   = x_dim.rmin();
-  double        dphi      = (2*M_PI/nsides);
-  double        hphi      = dphi/2;
-  double        mod_z     = layering.totalThickness();
-  double        outer_r   = inner_r + mod_z;
-  double        totThick  = mod_z;
+  int           nsides    = x_dim.numsides();std::cout<<"nsides="<<nsides<<std::endl;
+  double        inner_r   = x_dim.rmin();std::cout<<"inner_r="<<inner_r<<std::endl;
+  double        dphi      = (2*M_PI/nsides);std::cout<<"dphi="<<dphi<<std::endl;
+  double        hphi      = dphi/2;std::cout<<"hphi="<<hphi<<std::endl;
+  double        mod_z     = layering.totalThickness();std::cout<<"mod_z="<<mod_z<<std::endl;
+  double        outer_r   = inner_r + mod_z;std::cout<<"outer_r="<<outer_r<<std::endl;
+  double        totThick  = mod_z;std::cout<<"totThick="<<totThick<<std::endl;
   DetElement    sdet      (det_name,det_id);
   Volume        motherVol = description.pickMotherVolume(sdet);
   PolyhedraRegular hedra  (nsides,inner_r,inner_r+totThick+tolerance*2e0,x_dim.z());
@@ -51,11 +55,11 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
   double dx = 0.0; //mod_z / std::sin(dphi); // dx per layer
     
   // Compute the top and bottom face measurements.
-  double trd_x2 = (2 * std::tan(hphi) * outer_r - dx)/2 - tolerance;
-  double trd_x1 = (2 * std::tan(hphi) * inner_r + dx)/2 - tolerance;
-  double trd_y1 = x_dim.z()/2 - tolerance;
-  double trd_y2 = trd_y1;
-  double trd_z  = mod_z/2 - tolerance;
+  double trd_x2 = (2 * std::tan(hphi) * outer_r - dx)/2 - tolerance;std::cout<<"trd_x2="<<trd_x2<<std::endl;
+  double trd_x1 = (2 * std::tan(hphi) * inner_r + dx)/2 - tolerance;std::cout<<"trd_x1="<<trd_x1<<std::endl;
+  double trd_y1 = x_dim.z()/2 - tolerance;std::cout<<"trd_y1="<<trd_y1<<std::endl;
+  double trd_y2 = trd_y1;std::cout<<"trd_y2="<<trd_y2<<std::endl;
+  double trd_z  = mod_z/2 - tolerance; std::cout<<"trd_z="<<trd_z<<std::endl;
 		
   // Create the trapezoid for the stave.
   Trapezoid trd(trd_x1, // Outer side, i.e. the "short" X side.
@@ -68,23 +72,29 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
   sens.setType("calorimeter");
   { // =====  buildBarrelStave(description, sens, module_volume) =====
+    std::cout<<"building stave"<<std::endl;
     // Parameters for computing the layer X dimension:
-    double stave_z  = trd_y1;
-    double tan_hphi = std::tan(hphi);
+    double stave_z  = trd_y1;std::cout<<"stave_z="<<stave_z<<std::endl;
+    double tan_hphi = std::tan(hphi);std::cout<<"tan_hphi="<<tan_hphi<<std::endl;
     double l_dim_x  = trd_x1; // Starting X dimension for the layer.
-    double l_pos_z  = -(layering.totalThickness() / 2);
+    std::cout<<"l_dim_x="<<l_dim_x<<std::endl;
+    double l_pos_z  = -(layering.totalThickness() / 2);std::cout<<"l_pos_z="<<l_pos_z<<std::endl;
 
     // Loop over the sets of layer elements in the detector.
     int l_num = 1;
     for(xml_coll_t li(x_det,_U(layer)); li; ++li)  {
+      std::cout<<"    l_num="<<l_num<<std::endl;
       xml_comp_t x_layer = li;
-      int repeat = x_layer.repeat();
+      int repeat = x_layer.repeat();std::cout<<"   repeat="<<repeat<<std::endl;
       // Loop over number of repeats for this layer.
       for (int j=0; j<repeat; j++)    {
-        string l_name = _toString(l_num,"layer%d");
+	std::cout<<"      j="<<j<<std::endl;
+        string l_name = _toString(l_num,"layer%d");std::cout<<"      l_name="<<l_name<<std::endl;
         double l_thickness = layering.layer(l_num-1)->thickness();  // Layer's thickness.
+	std::cout<<"      l_thickness="<<l_thickness<<std::endl;
 
         Position   l_pos(0,0,l_pos_z+l_thickness/2);      // Position of the layer.
+	std::cout<<"      l_pos=("<<l_pos.x()<<","<<l_pos.y()<<","<<l_pos.z()<<std::endl;
         Box        l_box(l_dim_x-tolerance,stave_z-tolerance,l_thickness / 2-tolerance);
         Volume     l_vol(l_name,l_box,air);
         DetElement layer(stave_det, l_name, det_id);
@@ -93,6 +103,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
         int s_num = 1;
         double s_pos_z = -(l_thickness / 2);
         for(xml_coll_t si(x_layer,_U(slice)); si; ++si)  {
+	  std::cout<<"         s_num="<<s_num<<std::endl;
           xml_comp_t x_slice = si;
           string     s_name  = _toString(s_num,"slice%d");
           double     s_thick = x_slice.thickness();
@@ -111,6 +122,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
           slice.setPlacement(slice_phv);
           // Increment Z position of slice.
           s_pos_z += s_thick;
+	  std::cout<<"         s_pos_z="<<s_pos_z<<std::endl;
                                         
           // Increment slice number.
           ++s_num;
@@ -140,17 +152,21 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
   double mod_x_off = dx / 2;             // Stave X offset, derived from the dx.
   double mod_y_off = inner_r + mod_z/2;  // Stave Y offset
 
+  std::cout<<" placing staves"<<std::endl;
+
   // Create nsides staves.
   for (int i = 0; i < nsides; i++, phi -= dphi)      { // i is module number
+    std::cout<<"phi is "<<phi<<" i ="<<i<<std::endl;
     // Compute the stave position
-    double m_pos_x = mod_x_off * std::cos(phi) - mod_y_off * std::sin(phi);
-    double m_pos_y = mod_x_off * std::sin(phi) + mod_y_off * std::cos(phi);
+    double m_pos_x = mod_x_off * std::cos(phi) - mod_y_off * std::sin(phi);std::cout<<"m_pos_x="<<m_pos_x<<std::endl;
+    double m_pos_y = mod_x_off * std::sin(phi) + mod_y_off * std::cos(phi);std::cout<<"m_pos_y="<<m_pos_y<<std::endl;
     Transform3D tr(RotationZYX(0,phi,M_PI*0.5),Translation3D(-m_pos_x,-m_pos_y,0));
     PlacedVolume pv = envelope.placeVolume(mod_vol,tr);
     pv.addPhysVolID("system",det_id);
     pv.addPhysVolID("barrel",0);
     pv.addPhysVolID("module",i+1);
     DetElement sd = i==0 ? stave_det : stave_det.clone(_toString(i,"stave%d"));
+    std::cout<<"DetEl id is "<<sd.id()<<std::endl;
     sd.setPlacement(pv);
     sdet.add(sd);
   }

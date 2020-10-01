@@ -41,6 +41,7 @@ DetElement::Processor::~Processor()   {
 DetElement::DetElement(Object* det_data, const string& det_name, const string& det_type)
   : Handle<DetElementObject>(det_data)
 {
+  std::cout<<"detelement1 "<<det_name<<" "<<det_type<<std::endl;
   this->assign(det_data, det_name, det_type);
 }
 

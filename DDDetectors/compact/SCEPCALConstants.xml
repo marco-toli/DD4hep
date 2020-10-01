@@ -6,7 +6,7 @@
 
     <constant name="CrossingAngle" value="0.020*rad"/>
     
-    <constant name="CaloSides" value="16"/>
+    <constant name="CaloSides" value="113"/>
 
     
     <constant name="EcalBarrel_ID" value="6"/>
@@ -16,7 +16,7 @@
 
     
     
-    <constant name="SolenoidBarrelInnerRadius" value="EcalBarrel_rmax + 2.0*cm"/>
+    <constant name="SolenoidBarrelInnerRadius" value="EcalBarrel_rmax + 200.0*cm"/>
     <constant name="SolenoidCoilOuterZ" value="EcalBarrel_zmax"/> 
     <constant name="SolenoidBarrelInnerCryostatThickness" value="3.0*cm"/>
     <constant name="SolenoidBarrelInnerAirgapThickness" value="11.0*cm"/>
