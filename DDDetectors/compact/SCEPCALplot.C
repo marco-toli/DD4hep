@@ -31,8 +31,8 @@ void SCEPCALplot() {
 
 
   // open data and output file for histograms
-  const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSCEPCAL.root";
-  //const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSid.root";
+  //const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSCEPCAL.root";
+  const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSid.root";
   const char* outputfilename="hist.root";
 
 
@@ -86,12 +86,14 @@ void SCEPCALplot() {
 	double echeck=0.;
 	for (int imc = 0; imc < hittruth.size() ; ++imc) {
 	  echeck+=hittruth.at(imc).deposit;
+	  int pdgcheck=hittruth.at(imc).pdgID;
 
 	  // locate this truth particle in the mcparticles list
 	  dd4hep::sim::Geant4Particle* itmp = myMCParticles->at(hittruth.at(imc).trackID);
+	  if((pdgcheck)!=(itmp->pdgID)) std::cout<<"DANGER danger will robinson"<<std::endl;
 
 
-	  if(imc<5) { 
+	  if(imc<20) { 
 	    cout << "       trackID pdgID deposite time "<<hittruth.at(imc).trackID << " " << hittruth.at(imc).pdgID << " " << hittruth.at(imc).deposit << " " << hittruth.at(imc).time << endl;
 	    cout<< " from MC particles get id of "<<itmp->pdgID<<std::endl;
 	  }
