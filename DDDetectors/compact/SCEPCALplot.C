@@ -32,7 +32,8 @@ void SCEPCALplot() {
 
   // open data and output file for histograms
   const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSCEPCAL.root";
-  const char* outputfilename="testSCEPCAL_hist.root";
+  //const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSid.root";
+  const char* outputfilename="hist.root";
 
 
   // define histograms
@@ -58,18 +59,20 @@ void SCEPCALplot() {
 
     // some gen particle plots
     std::cout<<" number of gen particles "<< myMCParticles->size() <<std::endl;
+    hgenPsize->Fill( myMCParticles->size());
+    // the first particle
     dd4hep::sim::Geant4Particle* itmp = myMCParticles->at(0);
     double px = itmp->psx;
     double py = itmp->psy;
     double pT=sqrt(px*px+py*py);
-    std::cout<<"  first particle id pt is "<<itmp->pdgID<<" "<<pT/1000.<<std::endl;
-
+    std::cout<<"  first particle id pt is "<<itmp->pdgID<<" "<<pT<<std::endl;
+    //loop over all geant4 particles
     for(int ipart=0; ipart < myMCParticles->size(); ipart++){
         hgenPdgID->Fill((myMCParticles->at(ipart))->pdgID);
-    }
-    hgenPsize->Fill( myMCParticles->size());
+    }// end of geant4 particles loop
 
 
+    // some plots on the hits
     std::cout<<" number of barrel hits is "<<myEcalBarrelHits->size()<<std::endl;
     double Edep=0.;
     for(int iHit=0; iHit < myEcalBarrelHits->size(); iHit++){
@@ -78,22 +81,39 @@ void SCEPCALplot() {
 
 
       if(iHit<5) {
+	cout<<"hit energy is "<<hit->energyDeposit<<std::endl;
 	cout << "  number of truth info associated with the " << iHit << "th hit is " << hittruth.size() << endl;
-	for (int imc = 0; imc < hittruth.size() && imc < 5; ++imc) {
-	  cout << hittruth.at(imc).trackID << " " << hittruth.at(imc).pdgID << " " << hittruth.at(imc).deposit << " " << hittruth.at(imc).time << endl;
+	double echeck=0.;
+	for (int imc = 0; imc < hittruth.size() ; ++imc) {
+	  echeck+=hittruth.at(imc).deposit;
+
+	  // locate this truth particle in the mcparticles list
+	  dd4hep::sim::Geant4Particle* itmp = myMCParticles->at(hittruth.at(imc).trackID);
+
+
+	  if(imc<5) { 
+	    cout << "       trackID pdgID deposite time "<<hittruth.at(imc).trackID << " " << hittruth.at(imc).pdgID << " " << hittruth.at(imc).deposit << " " << hittruth.at(imc).time << endl;
+	    cout<< " from MC particles get id of "<<itmp->pdgID<<std::endl;
+	  }
+
+
+
+
+
 	}
+	std::cout<<"  echeck is "<<echeck<<std::endl;
 
       }
 
 
-      Edep+=(hit->energyDeposit)/1000.;
-    }
+      Edep+=(hit->energyDeposit);
+    }  // end of hit loop
     std::cout<<" total energy deposited in calorimeter is "<<Edep<<std::endl;
 
 
 
 
-  }
+  }  // end of event loop
  
 
 
