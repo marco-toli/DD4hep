@@ -59,7 +59,7 @@ void SCEPCALplot() {
     double px = itmp->psx;
     double py = itmp->psy;
     double pT=sqrt(px*px+py*py);
-    std::cout<<"  first particle id pt is "<<itmp->pdgID<<" "<<pT<<std::endl;
+    std::cout<<"  first particle id pt is "<<itmp->pdgID<<" "<<pT/1000.<<std::endl;
 
     for(int ipart=0; ipart < myMCParticles->size(); ipart++){
         hgenPdgID->Fill((myMCParticles->at(ipart))->pdgID);
@@ -68,11 +68,14 @@ void SCEPCALplot() {
 
 
     std::cout<<" number of barrel hits is "<<myEcalBarrelHits->size()<<std::endl;
+    double Edep=0.;
     for(int iHit=0; iHit < myEcalBarrelHits->size(); iHit++){
       dd4hep::sim::Geant4Calorimeter::Hit* itmp=myEcalBarrelHits->at(iHit);
-      if(iHit<5) std::cout<<" Hit "<<iHit<<" has E "<<itmp->energyDeposit<<std::endl;
+      if(iHit<5) std::cout<<" Hit "<<iHit<<" has E "<<(itmp->energyDeposit)/1000.<<std::endl;
+      Edep+=(itmp->energyDeposit)/1000.;
 
     }
+    std::cout<<" total energy deposited in calorimeter is "<<Edep<<std::endl;
 
 
 
