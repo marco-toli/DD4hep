@@ -48,20 +48,43 @@ void SCEPCALplot() {
   TTreeReaderValue<std::vector<dd4hep::sim::Geant4Particle*>> myMCParticles(myReader, "MCParticles");
   TTreeReaderValue<std::vector<dd4hep::sim::Geant4Calorimeter::Hit*>> myEcalBarrelHits(myReader, "EcalBarrelHits");
 
+  // loop over events
   unsigned int evtCounter = 0;
-  while (myReader.Next() && evtCounter<10){
+  while (myReader.Next() && evtCounter<3){
     cout << "Event " << evtCounter++ << endl;
+
+    // some gen particle plots
     std::cout<<" number of gen particles "<< myMCParticles->size() <<std::endl;
     dd4hep::sim::Geant4Particle* itmp = myMCParticles->at(0);
-    //    std::cout<<"  first particle id pt is "<<(*itmp)->pdgID()<<std::endl;
+    double px = itmp->psx;
+    double py = itmp->psy;
+    double pT=sqrt(px*px+py*py);
+    std::cout<<"  first particle id pt is "<<itmp->pdgID<<" "<<pT<<std::endl;
 
     for(int ipart=0; ipart < myMCParticles->size(); ipart++){
         hgenPdgID->Fill((myMCParticles->at(ipart))->pdgID);
-        if(ipart<5) cout << "particle " << (*(myMCParticles->at(ipart))).pdgID << endl;
     }
     hgenPsize->Fill( myMCParticles->size());
+
+
+    std::cout<<" number of barrel hits is "<<myEcalBarrelHits->size()<<std::endl;
+    for(int iHit=0; iHit < myEcalBarrelHits->size(); iHit++){
+      dd4hep::sim::Geant4Calorimeter::Hit* itmp=myEcalBarrelHits->at(iHit);
+      if(iHit<5) std::cout<<" Hit "<<iHit<<" has E "<<itmp->energyDeposit<<std::endl;
+
+    }
+
+
+
+
   }
+ 
+
+
+
   
+ 
+ 
   f->Close();
 
   TFile * out = new TFile(outputfilename,"RECREATE");
