@@ -42,11 +42,14 @@ void SCEPCALplot() {
 
   // get Tree
   TFile *f = new TFile(inputfilename);
+  f->Print();
   TTreeReader myReader("EVENT",f);
+  myReader.Print();
 
   // get objects
   TTreeReaderValue<std::vector<dd4hep::sim::Geant4Particle*>> myMCParticles(myReader, "MCParticles");
   TTreeReaderValue<std::vector<dd4hep::sim::Geant4Calorimeter::Hit*>> myEcalBarrelHits(myReader, "EcalBarrelHits");
+
 
   // loop over events
   unsigned int evtCounter = 0;
@@ -70,10 +73,20 @@ void SCEPCALplot() {
     std::cout<<" number of barrel hits is "<<myEcalBarrelHits->size()<<std::endl;
     double Edep=0.;
     for(int iHit=0; iHit < myEcalBarrelHits->size(); iHit++){
-      dd4hep::sim::Geant4Calorimeter::Hit* itmp=myEcalBarrelHits->at(iHit);
-      if(iHit<5) std::cout<<" Hit "<<iHit<<" has E "<<(itmp->energyDeposit)/1000.<<std::endl;
-      Edep+=(itmp->energyDeposit)/1000.;
+      auto hit = myEcalBarrelHits->at(iHit);
+      auto hittruth = hit->truth;
 
+
+      if(iHit<5) {
+	cout << "  number of truth info associated with the " << iHit << "th hit is " << hittruth.size() << endl;
+	for (int imc = 0; imc < hittruth.size() && imc < 5; ++imc) {
+	  cout << hittruth.at(imc).trackID << " " << hittruth.at(imc).pdgID << " " << hittruth.at(imc).deposit << " " << hittruth.at(imc).time << endl;
+	}
+
+      }
+
+
+      Edep+=(hit->energyDeposit)/1000.;
     }
     std::cout<<" total energy deposited in calorimeter is "<<Edep<<std::endl;
 
