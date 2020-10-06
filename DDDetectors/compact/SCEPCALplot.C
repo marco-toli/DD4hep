@@ -31,8 +31,8 @@ void SCEPCALplot() {
 
 
   // open data and output file for histograms
-  //const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSCEPCAL.root";
-  const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSid.root";
+  const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSCEPCAL.root";
+  //  const char* inputfilename="/data/users/eno/dd4hep/DD4hep/DDDetectors/compact/testSid.root";
   const char* outputfilename="hist.root";
 
 
@@ -64,7 +64,13 @@ void SCEPCALplot() {
     dd4hep::sim::Geant4Particle* itmp = myMCParticles->at(0);
     double px = itmp->psx;
     double py = itmp->psy;
+    double pz = itmp->psz;
     double pT=sqrt(px*px+py*py);
+    double ppp=sqrt(px*px+py*py+pz*pz);
+    double mass =itmp->mass;
+    double E=sqrt(pT*pT+mass*mass);
+    double beta = ppp/E;
+
     std::cout<<"  first particle id pt is "<<itmp->pdgID<<" "<<pT<<std::endl;
     //loop over all geant4 particles
     for(int ipart=0; ipart < myMCParticles->size(); ipart++){
@@ -96,11 +102,18 @@ void SCEPCALplot() {
 	  if(imc<20) { 
 	    cout << "       trackID pdgID deposite time "<<hittruth.at(imc).trackID << " " << hittruth.at(imc).pdgID << " " << hittruth.at(imc).deposit << " " << hittruth.at(imc).time << endl;
 	    cout<< " from MC particles get id of "<<itmp->pdgID<<std::endl;
+
+	    double px = itmp->psx;
+	    double py = itmp->psy;
+	    double pz = itmp->psz;
+	    double pT=sqrt(px*px+py*py);
+	    double ppp=sqrt(px*px+py*py+pz*pz);
+	    double mass =itmp->mass;
+	    double E=sqrt(ppp*ppp+mass*mass);
+	    double beta = ppp/E;
+	    std::cout<<"beta is "<<beta<<std::endl;
+
 	  }
-
-
-
-
 
 	}
 	std::cout<<"  echeck is "<<echeck<<std::endl;

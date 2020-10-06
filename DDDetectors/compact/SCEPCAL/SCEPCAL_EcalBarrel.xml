@@ -13,10 +13,10 @@
  <dimensions numsides="(int) CaloSides" rmin="EcalBarrel_rmin" z="EcalBarrel_zmax*2" />
     <staves vis="EcalStaveVis"/>
     <layer repeat="1" vis="EcalLayerVis">
-      <slice material = "E_PbWO4" thickness = "(EcalBarrel_rmax-EcalBarrel_rmin)*(5./14)" sensitive="yes" limits="cal_limits" vis="EcalSensitiveVis"/>
+      <slice material = "E_PbWO4" thickness = "(EcalBarrel_rmax-EcalBarrel_rmin)*(5./19)" sensitive="yes" limits="cal_limits" vis="EcalSensitiveVis"/>
     </layer>
     <layer repeat="1" vis="EcalLayerVis">
-      <slice material = "E_PbWO4" thickness = "(EcalBarrel_rmax-EcalBarrel_rmin)*(9./14.)" sensitive="yes" limits="cal_limits" vis="EcalSensitiveVis"/>
+      <slice material = "E_PbWO4" thickness = "(EcalBarrel_rmax-EcalBarrel_rmin)*(14./19.)" sensitive="yes" limits="cal_limits" vis="EcalSensitiveVis"/>
     </layer>
   </detector>
 </detectors>
