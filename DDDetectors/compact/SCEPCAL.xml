@@ -30,6 +30,11 @@
 
 
 
+  <define>
+    <include ref="SCEPCALproperties.xml"/>
+  </define>
+
+
 
   <includes>
     <gdmlFile  ref="SCEPCALelements.xml"/>
