@@ -43,6 +43,7 @@ namespace dd4hep {
 
     /// Define collections created by this sensitivie action object
     template <> void Geant4SensitiveAction<Geant4VoidSensitive>::defineCollections()    {
+
       m_collectionID = -1;
     }
 
@@ -131,7 +132,7 @@ namespace dd4hep {
       HitContribution contrib = Hit::extractContribution(step);
       Geant4HitCollection*  coll    = collection(m_collectionID);
       VolumeID cell = 0;
-
+      //      std::cout<<"i am in sensitive action calorimeter"<<std::endl;
       try {
         cell = cellID(step);
       } catch(std::runtime_error &e) {
@@ -153,6 +154,7 @@ namespace dd4hep {
       }
 
       //Hit* hit = coll->find<Hit>(CellIDCompare<Hit>(cell));
+
       Hit* hit = coll->findByKey<Hit>(cell);
       if ( !hit ) {
         Geant4TouchableHandler handler(step);
@@ -203,10 +205,15 @@ namespace dd4hep {
     template <> bool Geant4SensitiveAction<Geant4OpticalCalorimeter>::process(G4Step* step,G4TouchableHistory*) {
       G4Track * track =  step->GetTrack();
       // check that particle is optical photon:
+
+      //      std::cout<<"i am in sensitive action optical calorimeter"<<std::endl;
+
       if( track->GetDefinition() != G4OpticalPhoton::OpticalPhotonDefinition() )  {
+	std::cout<<" why am I in optical photon"<<std::endl;
         return false;
       }
       else if ( track->GetCreatorProcess()->G4VProcess::GetProcessName() != "Cerenkov")  {
+	std::cout<<" found cerenkov photon"<<std::endl;
         track->SetTrackStatus(fStopAndKill);
         return false;
       }
@@ -266,6 +273,10 @@ namespace dd4hep {
       HitContribution contrib = Hit::extractContribution(step,true);
       Geant4HitCollection*  coll    = collection(m_collectionID);
       VolumeID cell = 0;
+
+
+      //      std::cout<<"i am in sensitive action scintillator calorimeter"<<std::endl;
+
       try {
         cell = cellID(step);
       } catch(std::runtime_error &e) {

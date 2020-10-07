@@ -99,6 +99,8 @@ Geant4Sensitive::Geant4Sensitive(Geant4Context* ctxt, const string& nam, DetElem
   if (!det.isValid()) {
     throw runtime_error(format("Geant4Sensitive", "DDG4: Detector elemnt for %s is invalid.", nam.c_str()));
   }
+  std::cout<<" will robinson detector element is "<<nam.c_str()<<" "<<det.name()<<std::endl;
+
   declareProperty("HitCreationMode", m_hitCreationMode = SIMPLE_MODE);
   m_sequence  = context()->kernel().sensitiveAction(m_detector.name());
   m_sensitive = description_ref.sensitiveDetector(det.name());
@@ -362,6 +364,7 @@ bool Geant4SensDetActionSequence::process(G4Step* step, G4TouchableHistory* hist
     if (sensitive->accept(step))
       result |= sensitive->process(step, hist);
   }
+  //  std::cout<<"i am here"<<std::endl;
   m_process(step, hist);
   return result;
 }

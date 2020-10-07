@@ -29,8 +29,8 @@
   </info>
 
   <includes>
-    <gdmlFile  ref="elements.xml"/>
-    <gdmlFile  ref="materials.xml"/>
+    <gdmlFile  ref="SCEPCALelements.xml"/>
+    <gdmlFile  ref="SCEPCALmaterials.xml"/>
   </includes>
   
   <define>

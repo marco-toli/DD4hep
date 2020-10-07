@@ -158,7 +158,9 @@ void Geant4ParticleHandler::mark(const G4Track* track)   {
   G4LogicalVolume*       vol = track->GetVolume()->GetLogicalVolume();
   G4VSensitiveDetector*   g4 = vol->GetSensitiveDetector();
   Geant4ActionSD* sd = dynamic_cast<Geant4ActionSD*>(g4);
+
   string typ = sd ? sd->sensitiveType() : string();
+  //  std::cout<<"will robinson mark is "<<typ<<std::endl;
   if ( typ == "calorimeter" )
     mask.set(G4PARTICLE_CREATED_CALORIMETER_HIT);
   else if ( typ == "tracker" )
